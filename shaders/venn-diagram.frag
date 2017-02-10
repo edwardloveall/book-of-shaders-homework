@@ -21,16 +21,13 @@ void main() {
   float spread = radius * .8;
   float time = u_time * -1.;
 
-  vec2 red_spin = vec2(cos(time) * spread,
-                       sin(time) * spread);
-  vec2 green_spin = vec2(cos(time + TWO_PI * (1./3.)) * spread,
-                         sin(time + TWO_PI * (1./3.)) * spread);
-  vec2 blue_spin = vec2(cos(time + TWO_PI * (2./3.)) * spread,
-                        sin(time + TWO_PI * (2./3.)) * spread);
+  float colors[3];
 
-  float red = inside_circle(u_mouse + red_spin, radius);
-  float green = inside_circle(u_mouse + green_spin, radius);
-  float blue = inside_circle(u_mouse + blue_spin, radius);
+  for(int i = 0; i < 3; i++) {
+    vec2 spin = vec2(cos(time + TWO_PI * float(i)/3.) * spread,
+                sin(time + TWO_PI * float(i)/3.) * spread);
+    colors[i] = inside_circle(u_mouse + spin, radius);
+  }
 
-  gl_FragColor = vec4(red, green, blue, 1.0);
+  gl_FragColor = vec4(colors[0], colors[1], colors[2], 1.0);
 }
